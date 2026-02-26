@@ -29,6 +29,12 @@
             <audiences>
                 <audience>{{mcp-app-client-id}}</audience>
             </audiences>
+            <required-claims>
+                <!-- Ensure token has the mcp.access scope for MCP access -->
+                <claim name="scp" match="any">
+                    <value>mcp.access</value>
+                </claim>
+            </required-claims>
         </validate-azure-ad-token>
 
         <!-- Layer 1: Prompt Shields via Policy Fragment -->
