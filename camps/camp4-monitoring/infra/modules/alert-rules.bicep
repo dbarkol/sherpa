@@ -34,7 +34,8 @@ resource highInjectionRateAlert 'Microsoft.Insights/scheduledQueryRules@2023-03-
         {
           query: '''
 AppTraces
-| extend EventType = tostring(Properties.event_type)
+| extend CustomDims = parse_json(replace_string(replace_string(tostring(parse_json(Properties).custom_dimensions), "'", "\""), "None", "null"))
+| extend EventType = coalesce(tostring(parse_json(Properties).event_type), tostring(CustomDims.event_type))
 | where EventType == 'INJECTION_BLOCKED'
 | summarize Count = count()
 '''
@@ -83,9 +84,10 @@ resource unusualPiiRateAlert 'Microsoft.Insights/scheduledQueryRules@2023-03-15-
         {
           query: '''
 AppTraces
-| extend EventType = tostring(Properties.event_type)
+| extend CustomDims = parse_json(replace_string(replace_string(tostring(parse_json(Properties).custom_dimensions), "'", "\""), "None", "null"))
+| extend EventType = coalesce(tostring(parse_json(Properties).event_type), tostring(CustomDims.event_type))
 | where EventType == 'PII_REDACTED'
-| extend EntityCount = toint(Properties.entity_count)
+| extend EntityCount = coalesce(toint(parse_json(Properties).entity_count), toint(CustomDims.entity_count))
 | summarize TotalEntities = sum(EntityCount)
 '''
           timeAggregation: 'Total'
@@ -133,7 +135,8 @@ resource securityErrorsAlert 'Microsoft.Insights/scheduledQueryRules@2023-03-15-
         {
           query: '''
 AppTraces
-| extend EventType = tostring(Properties.event_type)
+| extend CustomDims = parse_json(replace_string(replace_string(tostring(parse_json(Properties).custom_dimensions), "'", "\""), "None", "null"))
+| extend EventType = coalesce(tostring(parse_json(Properties).event_type), tostring(CustomDims.event_type))
 | where EventType == 'SECURITY_ERROR'
 | summarize Count = count()
 '''
@@ -182,7 +185,8 @@ resource credentialExposureAlert 'Microsoft.Insights/scheduledQueryRules@2023-03
         {
           query: '''
 AppTraces
-| extend EventType = tostring(Properties.event_type)
+| extend CustomDims = parse_json(replace_string(replace_string(tostring(parse_json(Properties).custom_dimensions), "'", "\""), "None", "null"))
+| extend EventType = coalesce(tostring(parse_json(Properties).event_type), tostring(CustomDims.event_type))
 | where EventType == 'CREDENTIAL_DETECTED'
 | summarize Count = count()
 '''

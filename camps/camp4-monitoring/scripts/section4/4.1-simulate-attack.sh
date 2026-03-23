@@ -100,12 +100,21 @@ send_attack() {
     local arg_name="$2"
     local payload="$3"
     
+    # Use jq to safely encode payloads containing quotes, backslashes, backticks, etc.
+    local json_body
+    json_body=$(jq -n \
+        --arg tool "$tool_name" \
+        --arg arg "$arg_name" \
+        --arg val "$payload" \
+        --argjson id "$RANDOM" \
+        '{jsonrpc:"2.0", method:"tools/call", params:{name:$tool, arguments:{($arg):$val}}, id:$id}')
+    
     curl -s --max-time 10 -X POST "${APIM_GATEWAY_URL}/sherpa/mcp" \
         -H "Authorization: Bearer $TOKEN" \
         -H "Content-Type: application/json" \
         -H "Accept: application/json, text/event-stream" \
         -H "Mcp-Session-Id: $SESSION_ID" \
-        -d "{\"jsonrpc\":\"2.0\",\"method\":\"tools/call\",\"params\":{\"name\":\"$tool_name\",\"arguments\":{\"$arg_name\":\"$payload\"}},\"id\":$RANDOM}" > /dev/null 2>&1 || true
+        -d "$json_body" > /dev/null 2>&1 || true
 }
 
 echo -e "${CYAN}================================================================${NC}"
