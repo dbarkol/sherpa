@@ -78,16 +78,34 @@ cd sherpa
 
 ### Setup Python Environment for Base Camp
 
-```bash
-# Navigate to Base Camp
-cd camps/base-camp
+=== "macOS / Linux (bash)"
 
-# Install uv if not already installed
-curl -LsSf https://astral.sh/uv/install.sh | sh
+    ```bash
+    # Navigate to Base Camp
+    cd camps/base-camp
 
-# One command setup (creates venv, installs all dependencies)
-uv sync
-```
+    # Install uv if not already installed
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+
+    # One command setup (creates venv, installs all dependencies)
+    uv sync
+    ```
+
+=== "Windows (PowerShell)"
+
+    ```powershell
+    # Navigate to Base Camp
+    cd camps\base-camp
+
+    # Install uv if not already installed
+    powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+    # One command setup (creates venv, installs all dependencies)
+    uv sync
+    ```
+
+!!! note
+    If `uv` is not recognized after installing, you may need to open a new terminal window so that the updated `PATH` is picked up.
 
 ---
 
@@ -256,7 +274,7 @@ Start with **Waypoint 1** and work through each waypoint in order. By the end, y
 
         ### Step 3: Switch to Agent Mode
 
-        Open the chat dialog and select **"Agent"** mode along with a model like **Claude Sonnet 4.5**.
+        Open the chat dialog and select **"Agent"** mode along with a model like **Claude Opus 4.6**.
 
         ### Step 4: Exploit via Agent Prompt
 
@@ -337,8 +355,9 @@ Start with **Waypoint 1** and work through each waypoint in order. By the end, y
 
     ### Switch to Secure Server
 
+    **Stop the vulnerable server first** by pressing ctrl+c in the terminal where it's running.
+
     ```bash
-    # Stop the vulnerable server (Ctrl+C)
     # Navigate to secure server
     cd ../secure-server
     ```

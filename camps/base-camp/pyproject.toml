@@ -19,8 +19,8 @@ dev = [
     "ruff>=0.1.0",
 ]
 
-[tool.uv]
-dev-dependencies = []
+[dependency-groups]
+dev = []
 
 [tool.uv.sources]
 base-camp-vulnerable = { path = "vulnerable-server", editable = true }
