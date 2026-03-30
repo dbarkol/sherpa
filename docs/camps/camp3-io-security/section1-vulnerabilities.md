@@ -21,13 +21,23 @@ Azure AI Content Safety with Prompt Shields catches harmful content and AI-focus
 
 The exploit script accepts either `sherpa` or `trails` as a parameter. Run both to see that neither MCP server is protected:
 
-```bash
-# Test the Sherpa MCP server (native MCP passthrough)
-./scripts/1.1-exploit-injection.sh sherpa
+=== "Bash"
+    ```bash
+    # Test the Sherpa MCP server (native MCP passthrough)
+    ./scripts/1.1-exploit-injection.sh sherpa
 
-# Test the Trail MCP server (APIM-synthesized MCP)
-./scripts/1.1-exploit-injection.sh trails
-```
+    # Test the Trail MCP server (APIM-synthesized MCP)
+    ./scripts/1.1-exploit-injection.sh trails
+    ```
+
+=== "PowerShell"
+    ```powershell
+    # Test the Sherpa MCP server (native MCP passthrough)
+    ./scripts/1.1-exploit-injection.ps1 sherpa
+
+    # Test the Trail MCP server (APIM-synthesized MCP)
+    ./scripts/1.1-exploit-injection.ps1 trails
+    ```
 
 The script sends three technical injection attacks against the MCP servers. Every one succeeds:
 
@@ -62,14 +72,25 @@ Both MCP servers have tools that return sensitive PII:
 
 Let's see what happens when you request this data. Run the PII exploit against both servers:
 
-```bash
-# Test both MCP servers (default)
-./scripts/1.1-exploit-pii.sh
+=== "Bash"
+    ```bash
+    # Test both MCP servers (default)
+    ./scripts/1.1-exploit-pii.sh
 
-# Or test individually
-./scripts/1.1-exploit-pii.sh trails
-./scripts/1.1-exploit-pii.sh sherpa
-```
+    # Or test individually
+    ./scripts/1.1-exploit-pii.sh trails
+    ./scripts/1.1-exploit-pii.sh sherpa
+    ```
+
+=== "PowerShell"
+    ```powershell
+    # Test both MCP servers (default)
+    ./scripts/1.1-exploit-pii.ps1
+
+    # Or test individually
+    ./scripts/1.1-exploit-pii.ps1 trails
+    ./scripts/1.1-exploit-pii.ps1 sherpa
+    ```
 
 ??? example "Expected output: unredacted PII"
     For Trail MCP, this calls the `get-permit-holder` tool via MCP and returns:

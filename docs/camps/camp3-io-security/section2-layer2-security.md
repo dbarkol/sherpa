@@ -11,9 +11,15 @@ Now that you've seen the vulnerabilities, let's wire the security function into 
 
 The security function was deployed during provisioning but isn't connected to APIM yet. Let's flip the switch. Run the enable script to wire everything together:
 
-```bash
-./scripts/1.2-enable-io-security.sh
-```
+=== "Bash"
+    ```bash
+    ./scripts/1.2-enable-io-security.sh
+    ```
+
+=== "PowerShell"
+    ```powershell
+    ./scripts/1.2-enable-io-security.ps1
+    ```
 
 This script connects the security function to both MCP servers in APIM. After it runs, **sherpa-mcp** and **trail-mcp** both get inbound input checking (injection detection + Prompt Shields), and outbound responses are sanitized for PII and credentials before reaching the client.
 

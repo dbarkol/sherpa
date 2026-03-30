@@ -11,9 +11,15 @@ Confirm that both vulnerabilities are now fixed by running the same exploits fro
 
 Run the same injection attacks from Section 1. This time, they should be blocked:
 
-```bash
-./scripts/1.3-validate-injection.sh sherpa
-```
+=== "Bash"
+    ```bash
+    ./scripts/1.3-validate-injection.sh sherpa
+    ```
+
+=== "PowerShell"
+    ```powershell
+    ./scripts/1.3-validate-injection.ps1 sherpa
+    ```
 
 **Expected results:**
 
@@ -54,9 +60,15 @@ Status: 200 OK
 
 Now validate the Trail MCP server too:
 
-```bash
-./scripts/1.3-validate-injection.sh trails
-```
+=== "Bash"
+    ```bash
+    ./scripts/1.3-validate-injection.sh trails
+    ```
+
+=== "PowerShell"
+    ```powershell
+    ./scripts/1.3-validate-injection.ps1 trails
+    ```
 
 Layer 2 is successfully detecting and blocking injection attacks!
 
@@ -64,9 +76,15 @@ Layer 2 is successfully detecting and blocking injection attacks!
 
 The validation script tests PII redaction on both MCP servers. Run it to confirm sensitive data is now masked:
 
-```bash
-./scripts/1.3-validate-pii.sh
-```
+=== "Bash"
+    ```bash
+    ./scripts/1.3-validate-pii.sh
+    ```
+
+=== "PowerShell"
+    ```powershell
+    ./scripts/1.3-validate-pii.ps1
+    ```
 
 **Test 1: Trail API (trail-mcp → trail-api sanitization)**
 ```json
@@ -280,15 +298,27 @@ azd down --force --purge
 
 **Optional:** Delete the Entra ID applications:
 
-```bash
-# Get app IDs
-MCP_APP_ID=$(azd env get-value MCP_APP_CLIENT_ID)
-APIM_APP_ID=$(azd env get-value APIM_CLIENT_APP_ID)
+=== "Bash"
+    ```bash
+    # Get app IDs
+    MCP_APP_ID=$(azd env get-value MCP_APP_CLIENT_ID)
+    APIM_APP_ID=$(azd env get-value APIM_CLIENT_APP_ID)
 
-# Delete apps
-az ad app delete --id $MCP_APP_ID
-az ad app delete --id $APIM_APP_ID
-```
+    # Delete apps
+    az ad app delete --id $MCP_APP_ID
+    az ad app delete --id $APIM_APP_ID
+    ```
+
+=== "PowerShell"
+    ```powershell
+    # Get app IDs
+    $MCP_APP_ID = azd env get-value MCP_APP_CLIENT_ID
+    $APIM_APP_ID = azd env get-value APIM_CLIENT_APP_ID
+
+    # Delete apps
+    az ad app delete --id $MCP_APP_ID
+    az ad app delete --id $APIM_APP_ID
+    ```
 
 ---
 

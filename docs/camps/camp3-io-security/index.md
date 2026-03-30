@@ -47,13 +47,19 @@ Before starting Camp 3, ensure you have the required tools installed.
 :material-check: Azure CLI (authenticated)  
 :material-check: Azure Developer CLI - azd (authenticated)  
 :material-check: Docker (installed and running)  
-:material-check: Azure Functions Core Tools (for function deployment)  
 :material-check: Completed Camp 2 (recommended for OAuth context)  
 
 **Verify your setup:**
-```bash
-az account show && azd version && docker --version && func --version
-```
+
+=== "Bash"
+    ```bash
+    az account show && azd version && docker --version
+    ```
+
+=== "PowerShell"
+    ```powershell
+    az account show; azd version; docker --version
+    ```
 
 ---
 
@@ -73,6 +79,9 @@ Navigate to the Camp 3 directory:
 ```bash
 cd camps/camp3-io-security
 ```
+
+!!! tip "Windows Users"
+    All scripts in this camp have PowerShell equivalents (`.ps1`). When you see `./scripts/X.sh`, you can run `./scripts/X.ps1` instead.
 
 ---
 
@@ -131,10 +140,17 @@ Before climbing through the waypoints, deploy all Azure infrastructure and appli
 
     When provisioning completes, save these values:
 
-    ```bash
-    # Display your deployment info
-    azd env get-values | grep -E "APIM_GATEWAY_URL|FUNCTION_APP_URL|MCP_APP_CLIENT_ID"
-    ```
+    === "Bash"
+        ```bash
+        # Display your deployment info
+        azd env get-values | grep -E "APIM_GATEWAY_URL|FUNCTION_APP_URL|MCP_APP_CLIENT_ID"
+        ```
+
+    === "PowerShell"
+        ```powershell
+        # Display your deployment info
+        azd env get-values | Select-String "APIM_GATEWAY_URL|FUNCTION_APP_URL|MCP_APP_CLIENT_ID"
+        ```
 
 ---
 
