@@ -6,17 +6,17 @@
         },
         "sherpa-direct": {
             "type": "http",
-            "url": "https://sherpa-mcp-server.reddune-e4f68bf2.westus2.azurecontainerapps.io/mcp"
+            "url": "https://your-container-app.azurecontainerapps.io/mcp"
         },
         "sherpa-via-apim": {
             "type": "http", 
-            "url": "https://apim-camp2-barks2-dbgtij2jorxns.azure-api.net/sherpa/mcp"
+            "url": "https://your-apim-instance.azure-api.net/sherpa/mcp"
         },
         "trails-via-apim": {
             "type": "http",
-            "url": "https://apim-camp2-barks2-dbgtij2jorxns.azure-api.net/trails/mcp",
+            "url": "https://your-apim-instance.azure-api.net/trails/mcp",
             "headers": {
-                "Ocp-Apim-Subscription-Key": "bd8eabd1e0fd40b3a9d042fad38f8245"
+                "Ocp-Apim-Subscription-Key": "your-subscription-key"
             }
         }
     }
