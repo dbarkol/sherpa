@@ -69,9 +69,15 @@ In this section, you'll use [Azure AI Content Safety](https://learn.microsoft.co
 
     Apply Azure AI Content Safety:
 
-    ```bash
-    ./scripts/2.1-fix.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/2.1-fix.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/2.1-fix.ps1
+        ```
 
     This deploys:
 
@@ -184,9 +190,15 @@ In this section, you'll use [Azure AI Content Safety](https://learn.microsoft.co
 
     **1. Run the validation script:**
 
-    ```bash
-    ./scripts/2.1-validate.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/2.1-validate.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/2.1-validate.ps1
+        ```
 
     Expected output:
 

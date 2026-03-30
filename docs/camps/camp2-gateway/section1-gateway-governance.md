@@ -12,6 +12,7 @@ In this section, you'll deploy two MCP servers behind APIM: one native MCP serve
     ```bash
     cd camps/camp2-gateway
     ```
+    **Windows users:** Each `.sh` script has a `.ps1` equivalent. Use `./scripts/X.ps1` instead of `./scripts/X.sh`.
 
 ## Waypoint 1.1: Expose MCP Server via Gateway (No Auth → OAuth)
 
@@ -41,9 +42,15 @@ Without authentication, your MCP server is completely open to the internet. For 
 
     Let's start by deploying the Sherpa MCP Server with no authentication at all:
 
-    ```bash
-    ./scripts/1.1-deploy.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/1.1-deploy.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/1.1-deploy.ps1
+        ```
 
     ??? info "What does this script do?"
         The deployment script performs these steps:
@@ -88,9 +95,15 @@ Without authentication, your MCP server is completely open to the internet. For 
 
     **1. Get your endpoints:**
 
-    ```bash
-    azd env get-values | grep -E "SHERPA_SERVER_URL|APIM_GATEWAY_URL"
-    ```
+    === "Bash"
+        ```bash
+        azd env get-values | grep -E "SHERPA_SERVER_URL|APIM_GATEWAY_URL"
+        ```
+
+    === "PowerShell"
+        ```powershell
+        azd env get-values | Select-String "SHERPA_SERVER_URL|APIM_GATEWAY_URL"
+        ```
 
     **2. Configure VS Code to connect:**
 
@@ -157,9 +170,15 @@ Without authentication, your MCP server is completely open to the internet. For 
 
     Apply OAuth validation and enable automatic discovery:
 
-    ```bash
-    ./scripts/1.1-fix.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/1.1-fix.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/1.1-fix.ps1
+        ```
 
     This script deploys:
 
@@ -273,9 +292,15 @@ Without authentication, your MCP server is completely open to the internet. For 
 
     Test that OAuth is enforcing authentication:
 
-    ```bash
-    ./scripts/1.1-validate.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/1.1-validate.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/1.1-validate.ps1
+        ```
 
     The script verifies:
 
@@ -389,9 +414,15 @@ Subscription keys are useful for **tracking and billing**, but they are NOT auth
 
     Deploy the Trail API and expose it as an MCP server through APIM:
 
-    ```bash
-    ./scripts/1.2-deploy.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/1.2-deploy.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/1.2-deploy.ps1
+        ```
 
     ??? info "What is the Trail API?"
         **Trail API** is a REST API that provides trail permit management:
@@ -564,9 +595,15 @@ Subscription keys are useful for **tracking and billing**, but they are NOT auth
 
     Add OAuth validation while keeping subscription keys for tracking/billing:
 
-    ```bash
-    ./scripts/1.2-fix.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/1.2-fix.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/1.2-fix.ps1
+        ```
 
     **Expected output:**
 
@@ -661,9 +698,15 @@ Subscription keys are useful for **tracking and billing**, but they are NOT auth
 
     Test that both subscription key AND OAuth are enforced:
 
-    ```bash
-    ./scripts/1.2-validate.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/1.2-validate.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/1.2-validate.ps1
+        ```
 
     The script verifies:
 
@@ -794,9 +837,15 @@ Your APIs are deployed with OAuth but no rate limiting. Users can send unlimited
 
 See how a user can overwhelm the system:
 
-```bash
-./scripts/1.3-exploit.sh
-```
+=== "Bash"
+    ```bash
+    ./scripts/1.3-exploit.sh
+    ```
+
+=== "PowerShell"
+    ```powershell
+    ./scripts/1.3-exploit.ps1
+    ```
 
 This script sends 20 rapid requests using the same subscription key.
 
@@ -840,9 +889,15 @@ The script demonstrates how without rate limiting, a single runaway client can s
 
 Apply rate limiting to the Trail REST API:
 
-```bash
-./scripts/1.3-fix.sh
-```
+=== "Bash"
+    ```bash
+    ./scripts/1.3-fix.sh
+    ```
+
+=== "PowerShell"
+    ```powershell
+    ./scripts/1.3-fix.ps1
+    ```
 
 ??? info "What This Script Deploys"
     The script applies rate limiting to the Trail REST API:
@@ -895,9 +950,15 @@ This applies the policy:
 
 Test the rate limiting:
 
-```bash
-./scripts/1.3-validate.sh
-```
+=== "Bash"
+    ```bash
+    ./scripts/1.3-validate.sh
+    ```
+
+=== "PowerShell"
+    ```powershell
+    ./scripts/1.3-validate.ps1
+    ```
 
 The script sends 15 requests with the same subscription key. After 10 requests, additional requests should be rate limited.
 

@@ -34,9 +34,16 @@ This camp follows the same **"vulnerable → exploit → fix → validate"** pat
 :material-arrow-right: [Full prerequisites guide](../../prerequisites.md) with installation instructions.
 
 **Verify your setup:**
-```bash
-az account show && azd version && docker --version
-```
+
+=== "Bash"
+    ```bash
+    az account show && azd version && docker --version
+    ```
+
+=== "PowerShell"
+    ```powershell
+    az account show; azd version; docker --version
+    ```
 
 ---
 
@@ -52,6 +59,9 @@ cd sherpa/camps/camp2-gateway
 # Provision infrastructure (~10-15 minutes)
 azd provision
 ```
+
+!!! tip "Windows Users"
+    All scripts in this camp have PowerShell equivalents (`.ps1`). When you see `./scripts/X.sh`, you can run `./scripts/X.ps1` instead.
 
 When prompted, choose an environment name (e.g., `camp2-dev`), select your Azure subscription, and pick a region (e.g., `westus2`).
 
@@ -84,9 +94,15 @@ When prompted, choose an environment name (e.g., `camp2-dev`), select your Azure
 
 When provisioning completes, save your deployment info:
 
-```bash
-azd env get-values | grep -E "APIM_GATEWAY_URL|MCP_APP_CLIENT_ID|AZURE_RESOURCE_GROUP"
-```
+=== "Bash"
+    ```bash
+    azd env get-values | grep -E "APIM_GATEWAY_URL|MCP_APP_CLIENT_ID|AZURE_RESOURCE_GROUP"
+    ```
+
+=== "PowerShell"
+    ```powershell
+    azd env get-values | Select-String "APIM_GATEWAY_URL|MCP_APP_CLIENT_ID|AZURE_RESOURCE_GROUP"
+    ```
 
 Ready? Let's start by exposing your MCP server through the gateway.
 
@@ -94,4 +110,4 @@ Ready? Let's start by exposing your MCP server through the gateway.
 
 ---
 
-← [Camp 1: Identity](../camp1-identity.md) | [The Summit →](../summit.md)
+← [Camp 1: Identity](../camp1-identity.md) | [Gateway & Authentication →](section1-gateway-governance.md)

@@ -163,15 +163,27 @@ azd down --force --purge
 
 **Optional:** Delete the Entra ID applications:
 
-```bash
-# Get app IDs
-MCP_APP_ID=$(azd env get-value MCP_APP_CLIENT_ID)
-APIM_APP_ID=$(azd env get-value APIM_CLIENT_APP_ID)
+=== "Bash"
+    ```bash
+    # Get app IDs
+    MCP_APP_ID=$(azd env get-value MCP_APP_CLIENT_ID)
+    APIM_APP_ID=$(azd env get-value APIM_CLIENT_APP_ID)
 
-# Delete apps
-az ad app delete --id $MCP_APP_ID
-az ad app delete --id $APIM_APP_ID
-```
+    # Delete apps
+    az ad app delete --id $MCP_APP_ID
+    az ad app delete --id $APIM_APP_ID
+    ```
+
+=== "PowerShell"
+    ```powershell
+    # Get app IDs
+    $MCP_APP_ID = azd env get-value MCP_APP_CLIENT_ID
+    $APIM_APP_ID = azd env get-value APIM_CLIENT_APP_ID
+
+    # Delete apps
+    az ad app delete --id $MCP_APP_ID
+    az ad app delete --id $APIM_APP_ID
+    ```
 
 ---
 

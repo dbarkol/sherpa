@@ -27,9 +27,15 @@ You need **centralized API governance** to discover all MCP servers and prevent 
 
 Register your MCP servers in Azure API Center:
 
-```bash
-./scripts/1.4-fix.sh
-```
+=== "Bash"
+    ```bash
+    ./scripts/1.4-fix.sh
+    ```
+
+=== "PowerShell"
+    ```powershell
+    ./scripts/1.4-fix.ps1
+    ```
 
 This registers:
 

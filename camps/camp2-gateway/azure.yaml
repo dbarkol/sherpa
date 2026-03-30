@@ -28,7 +28,7 @@ hooks:
       continueOnError: false
     windows:
       shell: pwsh
-      run: ./scripts/hooks/preprovision.sh
+      run: ./scripts/hooks/preprovision.ps1
       continueOnError: false
   
   postprovision:
@@ -38,5 +38,5 @@ hooks:
       continueOnError: false
     windows:
       shell: pwsh
-      run: ./scripts/hooks/postprovision.sh
+      run: ./scripts/hooks/postprovision.ps1
       continueOnError: false
