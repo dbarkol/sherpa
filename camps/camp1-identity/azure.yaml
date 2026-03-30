@@ -4,10 +4,16 @@ metadata:
 
 hooks:
   preprovision:
-    shell: sh
-    run: ./scripts/hooks/preprovision.sh
-    interactive: true
-    continueOnError: false
+    posix:
+      shell: sh
+      run: ./scripts/hooks/preprovision.sh
+      interactive: true
+      continueOnError: false
+    windows:
+      shell: pwsh
+      run: ./scripts/hooks/preprovision.ps1
+      interactive: true
+      continueOnError: false
 
 services:
   vulnerable-server:

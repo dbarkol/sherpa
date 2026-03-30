@@ -67,6 +67,9 @@ Navigate to the Camp 1 directory:
 cd camps/camp1-identity
 ```
 
+!!! tip "Windows Users"
+    All scripts in this camp have PowerShell equivalents (`.ps1`). When you see `./scripts/X.sh`, you can run `./scripts/X.ps1` instead.
+
 ---
 
 ## The Ascent
@@ -157,10 +160,17 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
 
     ### Save Your Deployment Information
 
-    ```bash
-    # Get your deployment info
-    azd env get-values | grep -E "VULNERABLE_SERVER_URL|SECURE_SERVER_URL|AZURE_RESOURCE_GROUP|AZURE_KEY_VAULT"
-    ```
+    === "Bash"
+        ```bash
+        # Get your deployment info
+        azd env get-values | grep -E "VULNERABLE_SERVER_URL|SECURE_SERVER_URL|AZURE_RESOURCE_GROUP|AZURE_KEY_VAULT"
+        ```
+
+    === "PowerShell"
+        ```powershell
+        # Get your deployment info
+        azd env get-values | Select-String "VULNERABLE_SERVER_URL|SECURE_SERVER_URL|AZURE_RESOURCE_GROUP|AZURE_KEY_VAULT"
+        ```
 
     Keep these values handy - you'll need them for the exploits!
 
@@ -192,17 +202,31 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
 
     **Try it yourself:** Copy the stolen token and use it to authenticate:
 
-    ```bash
-    # Get your vulnerable server URL
-    VULNERABLE_URL=$(azd env get-values | grep VULNERABLE_SERVER_URL | cut -d= -f2 | tr -d '"')
-    
-    # Test with the stolen token - server accepts it!
-    curl -X POST ${VULNERABLE_URL}/mcp \
-      -H "Authorization: Bearer camp1_demo_token_INSECURE" \
-      -H "Content-Type: application/json" \
-      -H "Accept: application/json, text/event-stream" \
-      -d '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"exploit-test","version":"1.0"}},"id":1}'
-    ```
+    === "Bash"
+        ```bash
+        # Get your vulnerable server URL
+        VULNERABLE_URL=$(azd env get-values | grep VULNERABLE_SERVER_URL | cut -d= -f2 | tr -d '"')
+        
+        # Test with the stolen token - server accepts it!
+        curl -X POST ${VULNERABLE_URL}/mcp \
+          -H "Authorization: Bearer camp1_demo_token_INSECURE" \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json, text/event-stream" \
+          -d '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"exploit-test","version":"1.0"}},"id":1}'
+        ```
+
+    === "PowerShell"
+        ```powershell
+        # Get your vulnerable server URL
+        $VULNERABLE_URL = azd env get-value VULNERABLE_SERVER_URL
+
+        # Test with the stolen token - server accepts it!
+        curl.exe -X POST "$VULNERABLE_URL/mcp" `
+          -H "Authorization: Bearer camp1_demo_token_INSECURE" `
+          -H "Content-Type: application/json" `
+          -H "Accept: application/json, text/event-stream" `
+          -d '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"exploit-test","version":"1.0"}},"id":1}'
+        ```
 
     **What you'll see:** The server returns a successful response. The MCP server can't tell the difference between a legitimate request and your stolen token - **it just works!**
 
@@ -293,10 +317,17 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
 
     Your infrastructure already created the Managed Identity during the provision process. Let's verify it:
 
-    ```bash
-    cd camps/camp1-identity
-    ./scripts/enable-managed-identity.sh
-    ```
+    === "Bash"
+        ```bash
+        cd camps/camp1-identity
+        ./scripts/enable-managed-identity.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        cd camps/camp1-identity
+        ./scripts/enable-managed-identity.ps1
+        ```
 
     This script:
     
@@ -439,10 +470,17 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
 
     Let's migrate demo secrets from environment variables to Key Vault:
 
-    ```bash
-    cd camps/camp1-identity
-    ./scripts/migrate-to-keyvault.sh
-    ```
+    === "Bash"
+        ```bash
+        cd camps/camp1-identity
+        ./scripts/migrate-to-keyvault.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        cd camps/camp1-identity
+        ./scripts/migrate-to-keyvault.ps1
+        ```
 
     This script:
     
@@ -582,10 +620,17 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
 
     This enables both authentication methods (Option A and B) with a single registration.
 
-    ```bash
-    cd camps/camp1-identity
-    ./scripts/register-entra-app.sh
-    ```
+    === "Bash"
+        ```bash
+        cd camps/camp1-identity
+        ./scripts/register-entra-app.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        cd camps/camp1-identity
+        ./scripts/register-entra-app.ps1
+        ```
 
     **Expected output:**
 
@@ -735,9 +780,15 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
 
     Now configure the secure server to use these values for JWT validation:
 
-    ```bash
-    ./scripts/configure-secure-server.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/configure-secure-server.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/configure-secure-server.ps1
+        ```
 
     **What this script does:**
 
@@ -837,9 +888,15 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
 
         This flow helps you understand JWT tokens by making them visible:
 
-        ```bash
-        ./scripts/get-mcp-token.sh
-        ```
+        === "Bash"
+            ```bash
+            ./scripts/get-mcp-token.sh
+            ```
+
+        === "PowerShell"
+            ```powershell
+            ./scripts/get-mcp-token.ps1
+            ```
 
         **What happens:**
         
@@ -882,35 +939,67 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
 
         **Save your token for testing:**
 
-        ```bash
-        # Copy the token from script output and set it
-        TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIs..."
-        ```
+        === "Bash"
+            ```bash
+            # Copy the token from script output and set it
+            TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIs..."
+            ```
+
+        === "PowerShell"
+            ```powershell
+            # Copy the token from script output and set it
+            $TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIs..."
+            ```
 
         **Test with curl:**
 
-        ```bash
-        # Get secure server URL (strip quotes)
-        SECURE_URL=$(azd env get-values | grep SECURE_SERVER_URL | cut -d= -f2 | tr -d '"')
-        
-        # Step 1: Initialize MCP session and capture session ID from response headers
-        RESPONSE=$(curl -i -X POST ${SECURE_URL}/mcp \
-        -H "Authorization: Bearer $TOKEN" \
-        -H "Content-Type: application/json" \
-        -H "Accept: application/json, text/event-stream" \
-        -d '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"curl-test","version":"1.0"}},"id":1}')
-        
-        SESSION_ID=$(echo "$RESPONSE" | grep -i "mcp-session-id:" | awk '{print $2}' | tr -d '\r')
-        echo "Session ID: $SESSION_ID"
-        
-        # Step 2: List available tools using the session ID
-        curl -s -X POST ${SECURE_URL}/mcp \
-        -H "Authorization: Bearer $TOKEN" \
-        -H "Content-Type: application/json" \
-        -H "Accept: application/json, text/event-stream" \
-        -H "mcp-session-id: ${SESSION_ID}" \
-        -d '{"jsonrpc":"2.0","method":"tools/list","id":2}'
-        ```
+        === "Bash"
+            ```bash
+            # Get secure server URL (strip quotes)
+            SECURE_URL=$(azd env get-values | grep SECURE_SERVER_URL | cut -d= -f2 | tr -d '"')
+            
+            # Step 1: Initialize MCP session and capture session ID from response headers
+            RESPONSE=$(curl -i -X POST ${SECURE_URL}/mcp \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json, text/event-stream" \
+            -d '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"curl-test","version":"1.0"}},"id":1}')
+            
+            SESSION_ID=$(echo "$RESPONSE" | grep -i "mcp-session-id:" | awk '{print $2}' | tr -d '\r')
+            echo "Session ID: $SESSION_ID"
+            
+            # Step 2: List available tools using the session ID
+            curl -s -X POST ${SECURE_URL}/mcp \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json, text/event-stream" \
+            -H "mcp-session-id: ${SESSION_ID}" \
+            -d '{"jsonrpc":"2.0","method":"tools/list","id":2}'
+            ```
+
+        === "PowerShell"
+            ```powershell
+            # Get secure server URL
+            $SECURE_URL = azd env get-value SECURE_SERVER_URL
+
+            # Step 1: Initialize MCP session and capture session ID from response headers
+            $RESPONSE = curl.exe -i -X POST "$SECURE_URL/mcp" `
+            -H "Authorization: Bearer $TOKEN" `
+            -H "Content-Type: application/json" `
+            -H "Accept: application/json, text/event-stream" `
+            -d '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"curl-test","version":"1.0"}},"id":1}'
+
+            $SESSION_ID = ($RESPONSE -split "`n" | Select-String -Pattern "mcp-session-id:" | Select-Object -First 1).ToString() -replace '.*:\s*', '' | ForEach-Object { $_.Trim() }
+            Write-Host "Session ID: $SESSION_ID"
+
+            # Step 2: List available tools using the session ID
+            curl.exe -s -X POST "$SECURE_URL/mcp" `
+            -H "Authorization: Bearer $TOKEN" `
+            -H "Content-Type: application/json" `
+            -H "Accept: application/json, text/event-stream" `
+            -H "mcp-session-id: $SESSION_ID" `
+            -d '{"jsonrpc":"2.0","method":"tools/list","id":2}'
+            ```
 
         **Success!** You should see a list of available tools returned, proving JWT authentication works!
 
@@ -920,40 +1009,79 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
             This usually means authentication failed. Check:
             
             1. **Is your token expired?**
-            ```bash
-            # Decode your token at jwt.ms or check expiration
-            echo $TOKEN | cut -d. -f2 | base64 -d 2>/dev/null | jq .exp
-            # Compare to current time: date +%s
-            ```
-            
+
+            === "Bash"
+                ```bash
+                # Decode your token at jwt.ms or check expiration
+                echo $TOKEN | cut -d. -f2 | base64 -d 2>/dev/null | jq .exp
+                # Compare to current time: date +%s
+                ```
+
+            === "PowerShell"
+                ```powershell
+                # Decode your token at jwt.ms or check expiration
+                # Copy the middle portion of the token (between the two dots) and decode at https://jwt.ms
+                ```
+
             Tokens expire after ~1 hour. Get a new token:
-            ```bash
-            ./scripts/get-mcp-token.sh
-            TOKEN="<new-token>"
-            ```
-            
+
+            === "Bash"
+                ```bash
+                ./scripts/get-mcp-token.sh
+                TOKEN="<new-token>"
+                ```
+
+            === "PowerShell"
+                ```powershell
+                ./scripts/get-mcp-token.ps1
+                $TOKEN = "<new-token>"
+                ```
+
             2. **Is the audience correct?**
-            ```bash
-            # Check the 'aud' claim in your token
-            echo $TOKEN | cut -d. -f2 | base64 -d 2>/dev/null | jq .aud
-            
-            # Compare to your CLIENT_ID
-            azd env get-values | grep AZURE_CLIENT_ID
-            ```
+
+            === "Bash"
+                ```bash
+                # Check the 'aud' claim in your token
+                echo $TOKEN | cut -d. -f2 | base64 -d 2>/dev/null | jq .aud
+
+                # Compare to your CLIENT_ID
+                azd env get-values | grep AZURE_CLIENT_ID
+                ```
+
+            === "PowerShell"
+                ```powershell
+                # Check the 'aud' claim in your token
+                # Decode at https://jwt.ms and check the 'aud' field
+
+                # Compare to your CLIENT_ID
+                azd env get-value AZURE_CLIENT_ID
+                ```
             
             If they don't match, you may need to:
             - Ensure `configure-secure-server.sh` was run
             - Verify `AZURE_CLIENT_ID` is set correctly in the Container App
             
             3. **See the full error response:**
-            ```bash
-            # Remove the SESSION_ID extraction to see full output
-            curl -v -X POST ${SECURE_URL}/mcp \
-                -H "Authorization: Bearer $TOKEN" \
-                -H "Content-Type: application/json" \
-                -H "Accept: application/json, text/event-stream" \
-                -d '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"curl-test","version":"1.0"}},"id":1}'
-            ```
+
+            === "Bash"
+                ```bash
+                # Remove the SESSION_ID extraction to see full output
+                curl -v -X POST ${SECURE_URL}/mcp \
+                    -H "Authorization: Bearer $TOKEN" \
+                    -H "Content-Type: application/json" \
+                    -H "Accept: application/json, text/event-stream" \
+                    -d '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"curl-test","version":"1.0"}},"id":1}'
+                ```
+
+            === "PowerShell"
+                ```powershell
+                # Remove the SESSION_ID extraction to see full output
+                curl.exe -v -X POST "$SECURE_URL/mcp" `
+                    -H "Authorization: Bearer $TOKEN" `
+                    -H "Content-Type: application/json" `
+                    -H "Accept: application/json, text/event-stream" `
+                    -d '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"curl-test","version":"1.0"}},"id":1}'
+                ```
             
             Look for:
             - `401 Unauthorized` - Token is invalid/expired/wrong audience
@@ -964,14 +1092,25 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
             
             This happens when the response has no body. Check:
             
-            ```bash
-            # Use -v flag to see headers and status code
-            curl -v -X POST ${SECURE_URL}/mcp \
-            -H "Authorization: Bearer $TOKEN" \
-            -H "mcp-session-id: ${SESSION_ID}" \
-            -H "Content-Type: application/json" \
-            -d '{"jsonrpc":"2.0","method":"tools/list","id":2}'
-            ```
+            === "Bash"
+                ```bash
+                # Use -v flag to see headers and status code
+                curl -v -X POST ${SECURE_URL}/mcp \
+                -H "Authorization: Bearer $TOKEN" \
+                -H "mcp-session-id: ${SESSION_ID}" \
+                -H "Content-Type: application/json" \
+                -d '{"jsonrpc":"2.0","method":"tools/list","id":2}'
+                ```
+
+            === "PowerShell"
+                ```powershell
+                # Use -v flag to see headers and status code
+                curl.exe -v -X POST "$SECURE_URL/mcp" `
+                -H "Authorization: Bearer $TOKEN" `
+                -H "mcp-session-id: $SESSION_ID" `
+                -H "Content-Type: application/json" `
+                -d '{"jsonrpc":"2.0","method":"tools/list","id":2}'
+                ```
             
             Common causes:
             - Missing or invalid `mcp-session-id` header
@@ -1054,9 +1193,15 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
         
         **Step 2: Generate client secret for token exchange**
         
-        ```bash
-        ./scripts/generate-client-secret.sh
-        ```
+        === "Bash"
+            ```bash
+            ./scripts/generate-client-secret.sh
+            ```
+
+        === "PowerShell"
+            ```powershell
+            ./scripts/generate-client-secret.ps1
+            ```
         
         This creates a client secret for local testing (expires in 30 days). The secret is saved to `demo-client/.env` and is git-ignored.
         
@@ -1071,16 +1216,30 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
         
         **Step 3: Run the demo**
         
-        ```bash
-        # Get your configuration
-        eval "$(azd env get-values | sed 's/^/export /')"
-        
-        # Run the demo (uv handles dependencies automatically)
-        cd demo-client
-        uv run --project .. python mcp_prm_client.py \
-        "${SECURE_SERVER_URL}" \
-        "${AZURE_CLIENT_ID}"
-        ```
+        === "Bash"
+            ```bash
+            # Get your configuration
+            eval "$(azd env get-values | sed 's/^/export /')"
+
+            # Run the demo (uv handles dependencies automatically)
+            cd demo-client
+            uv run --project .. python mcp_prm_client.py \
+            "${SECURE_SERVER_URL}" \
+            "${AZURE_CLIENT_ID}"
+            ```
+
+        === "PowerShell"
+            ```powershell
+            # Get your configuration
+            $SECURE_SERVER_URL = azd env get-value SECURE_SERVER_URL
+            $AZURE_CLIENT_ID = azd env get-value AZURE_CLIENT_ID
+
+            # Run the demo (uv handles dependencies automatically)
+            cd demo-client
+            uv run --project .. python mcp_prm_client.py `
+            "$SECURE_SERVER_URL" `
+            "$AZURE_CLIENT_ID"
+            ```
 
         #### What Happens
 
@@ -1138,14 +1297,25 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
 
         You can also check the PRM endpoint directly:
 
-        ```bash
-        SECURE_URL=$(azd env get-values | grep SECURE_SERVER_URL | cut -d= -f2 | tr -d '"')
-        
-        # Check WWW-Authenticate header on 401
-        curl -i "${SECURE_URL}/mcp" \
-        -H "Content-Type: application/json" \
-        -d '{"jsonrpc":"2.0","method":"initialize","id":1}'
-        ```
+        === "Bash"
+            ```bash
+            SECURE_URL=$(azd env get-values | grep SECURE_SERVER_URL | cut -d= -f2 | tr -d '"')
+
+            # Check WWW-Authenticate header on 401
+            curl -i "${SECURE_URL}/mcp" \
+            -H "Content-Type: application/json" \
+            -d '{"jsonrpc":"2.0","method":"initialize","id":1}'
+            ```
+
+        === "PowerShell"
+            ```powershell
+            $SECURE_URL = azd env get-value SECURE_SERVER_URL
+
+            # Check WWW-Authenticate header on 401
+            curl.exe -i "$SECURE_URL/mcp" `
+            -H "Content-Type: application/json" `
+            -d '{"jsonrpc":"2.0","method":"initialize","id":1}'
+            ```
 
         **Look for:**
         ```
@@ -1154,9 +1324,16 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
         ```
 
         **Fetch the PRM metadata:**
-        ```bash
-        curl -s "${SECURE_URL}/.well-known/oauth-protected-resource" | jq .
-        ```
+
+        === "Bash"
+            ```bash
+            curl -s "${SECURE_URL}/.well-known/oauth-protected-resource" | jq .
+            ```
+
+        === "PowerShell"
+            ```powershell
+            curl.exe -s "$SECURE_URL/.well-known/oauth-protected-resource" | ConvertFrom-Json | ConvertTo-Json -Depth 10
+            ```
 
         **Expected output:**
         ```json
@@ -1234,10 +1411,17 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
 
     Let's verify all security controls are properly configured:
 
-    ```bash
-    cd camps/camp1-identity
-    ./scripts/verify-security.sh
-    ```
+    === "Bash"
+        ```bash
+        cd camps/camp1-identity
+        ./scripts/verify-security.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        cd camps/camp1-identity
+        ./scripts/verify-security.ps1
+        ```
 
     This script performs comprehensive checks:
 
@@ -1296,13 +1480,23 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
 
         Try using an old/expired token:
 
-        ```bash
-        # This should FAIL with "Token expired" or "Invalid token"
-        curl -X POST ${SECURE_URL}/mcp \
-        -H "Authorization: Bearer expired_or_old_token" \
-        -H "Content-Type: application/json" \
-        -d '{"jsonrpc":"2.0","method":"tools/list","id":1}'
-        ```
+        === "Bash"
+            ```bash
+            # This should FAIL with "Token expired" or "Invalid token"
+            curl -X POST ${SECURE_URL}/mcp \
+            -H "Authorization: Bearer expired_or_old_token" \
+            -H "Content-Type: application/json" \
+            -d '{"jsonrpc":"2.0","method":"tools/list","id":1}'
+            ```
+
+        === "PowerShell"
+            ```powershell
+            # This should FAIL with "Token expired" or "Invalid token"
+            curl.exe -X POST "$SECURE_URL/mcp" `
+            -H "Authorization: Bearer expired_or_old_token" `
+            -H "Content-Type: application/json" `
+            -d '{"jsonrpc":"2.0","method":"tools/list","id":1}'
+            ```
 
         **Expected:** 401 Unauthorized or similar error
 
@@ -1310,16 +1504,29 @@ Camp 1 follows six waypoints, each building on the previous one. Click each wayp
 
         Try using a token with wrong audience:
 
-        ```bash
-        # Get a token for a different resource (e.g., Microsoft Graph)
-        WRONG_TOKEN=$(az account get-access-token --resource https://graph.microsoft.com --query accessToken -o tsv)
-        
-        # This should FAIL because audience is wrong
-        curl -X POST ${SECURE_URL}/mcp \
-        -H "Authorization: Bearer $WRONG_TOKEN" \
-        -H "Content-Type: application/json" \
-        -d '{"jsonrpc":"2.0","method":"tools/list","id":1}'
-        ```
+        === "Bash"
+            ```bash
+            # Get a token for a different resource (e.g., Microsoft Graph)
+            WRONG_TOKEN=$(az account get-access-token --resource https://graph.microsoft.com --query accessToken -o tsv)
+
+            # This should FAIL because audience is wrong
+            curl -X POST ${SECURE_URL}/mcp \
+            -H "Authorization: Bearer $WRONG_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"jsonrpc":"2.0","method":"tools/list","id":1}'
+            ```
+
+        === "PowerShell"
+            ```powershell
+            # Get a token for a different resource (e.g., Microsoft Graph)
+            $WRONG_TOKEN = az account get-access-token --resource https://graph.microsoft.com --query accessToken -o tsv
+
+            # This should FAIL because audience is wrong
+            curl.exe -X POST "$SECURE_URL/mcp" `
+            -H "Authorization: Bearer $WRONG_TOKEN" `
+            -H "Content-Type: application/json" `
+            -d '{"jsonrpc":"2.0","method":"tools/list","id":1}'
+            ```
 
         **Expected:** 401 Unauthorized - audience validation failed
 
@@ -1396,13 +1603,23 @@ azd down --force --purge
 
 **Optional:** Delete the Entra ID application:
 
-```bash
-# Get app ID
-APP_ID=$(azd env get-value AZURE_CLIENT_ID)
+=== "Bash"
+    ```bash
+    # Get app ID
+    APP_ID=$(azd env get-value AZURE_CLIENT_ID)
 
-# Delete app
-az ad app delete --id $APP_ID
-```
+    # Delete app
+    az ad app delete --id $APP_ID
+    ```
+
+=== "PowerShell"
+    ```powershell
+    # Get app ID
+    $APP_ID = azd env get-value AZURE_CLIENT_ID
+
+    # Delete app
+    az ad app delete --id $APP_ID
+    ```
 
 ---
 
