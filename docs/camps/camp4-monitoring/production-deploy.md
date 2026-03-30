@@ -37,16 +37,42 @@ In complete mode, APIM routes directly to v2 (structured logging) and the workbo
 
 If you already have a Camp 4 environment from the workshop, create a new one to keep things separate:
 
-```bash
-cd camps/camp4-monitoring
+=== "Bash"
+    ```bash
+    cd camps/camp4-monitoring
 
-# Create a new azd environment
-azd env new camp4-complete
+    # Clear any stale environment variables from previous camps
+    unset AZURE_ENV_NAME
+    unset AZURE_RESOURCE_GROUP
 
-# Set your subscription and region
-azd env set AZURE_SUBSCRIPTION_ID <your-subscription-id>
-azd env set AZURE_LOCATION <your-region>
-```
+    # Create and select the new azd environment
+    azd env new camp4-complete
+    azd env select camp4-complete
+
+    # Set your subscription and region
+    azd env set AZURE_SUBSCRIPTION_ID <your-subscription-id>
+    azd env set AZURE_LOCATION <your-region>
+    ```
+
+=== "PowerShell"
+    ```powershell
+    cd camps/camp4-monitoring
+
+    # Clear any stale environment variables from previous camps
+    Remove-Item Env:AZURE_ENV_NAME -ErrorAction SilentlyContinue
+    Remove-Item Env:AZURE_RESOURCE_GROUP -ErrorAction SilentlyContinue
+
+    # Create and select the new azd environment
+    azd env new camp4-complete
+    azd env select camp4-complete
+
+    # Set your subscription and region
+    azd env set AZURE_SUBSCRIPTION_ID <your-subscription-id>
+    azd env set AZURE_LOCATION <your-region>
+    ```
+
+!!! warning "Shell Environment Variables Override azd"
+    If `AZURE_ENV_NAME` or `AZURE_RESOURCE_GROUP` are set in your shell (e.g., from a previous camp), `azd` will use those values instead of the newly created environment — even if you ran `azd env new`. Always clear them before deploying to a new environment.
 
 !!! tip "Finding Your Subscription ID"
     ```bash
@@ -55,9 +81,15 @@ azd env set AZURE_LOCATION <your-region>
 
 ### 2. Set Complete Mode
 
-```bash
-azd env set DEPLOY_MODE complete
-```
+=== "Bash"
+    ```bash
+    azd env set DEPLOY_MODE complete
+    ```
+
+=== "PowerShell"
+    ```powershell
+    azd env set DEPLOY_MODE complete
+    ```
 
 This single variable controls the full deployment:
 
@@ -66,9 +98,15 @@ This single variable controls the full deployment:
 
 ### 3. Deploy
 
-```bash
-azd up
-```
+=== "Bash"
+    ```bash
+    azd up
+    ```
+
+=== "PowerShell"
+    ```powershell
+    azd up
+    ```
 
 This takes ~10-15 minutes. When it finishes, you'll have the complete observability stack running.
 
@@ -100,9 +138,15 @@ This takes ~10-15 minutes. When it finishes, you'll have the complete observabil
 
 Once deployment completes, immediately run the attack simulation to generate data:
 
-```bash
-./scripts/section4/4.1-simulate-attack.sh
-```
+=== "Bash"
+    ```bash
+    ./scripts/section4/4.1-simulate-attack.sh
+    ```
+
+=== "PowerShell"
+    ```powershell
+    ./scripts/section4/4.1-simulate-attack.ps1
+    ```
 
 This sends multiple attack types (SQL injection, path traversal, shell injection, prompt injection) through the APIM gateway. While the logs are ingesting, you can verify the deployment.
 
@@ -121,13 +165,26 @@ By the time you've navigated to the portal, the logs should be flowing. Open you
 
 ## Cleanup
 
-```bash
-# Remove all Azure resources for this environment
-azd down --force --purge
+=== "Bash"
+    ```bash
+    # Remove all Azure resources for this environment
+    azd down --force --purge
 
-# Clean up Entra ID app registrations (ignore errors if already deleted)
-az ad app delete --id $(azd env get-value MCP_APP_CLIENT_ID)
-az ad app delete --id $(azd env get-value APIM_CLIENT_APP_ID)
-```
+    # Clean up Entra ID app registrations (ignore errors if already deleted)
+    az ad app delete --id $(azd env get-value MCP_APP_CLIENT_ID)
+    az ad app delete --id $(azd env get-value APIM_CLIENT_APP_ID)
+    ```
+
+=== "PowerShell"
+    ```powershell
+    # Remove all Azure resources for this environment
+    azd down --force --purge
+
+    # Clean up Entra ID app registrations (ignore errors if already deleted)
+    $MCP_ID = azd env get-value MCP_APP_CLIENT_ID
+    $APIM_ID = azd env get-value APIM_CLIENT_APP_ID
+    az ad app delete --id $MCP_ID
+    az ad app delete --id $APIM_ID
+    ```
 
 ---

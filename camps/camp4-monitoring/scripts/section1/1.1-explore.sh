@@ -183,6 +183,7 @@ if [ -n "$DIAG_SETTINGS" ]; then
         LOG_COUNT=$(az monitor log-analytics query \
             --workspace "$WORKSPACE_GUID" \
             --analytics-query "ApiManagementGatewayLogs | where TimeGenerated > ago(1h) | count" \
+            --timeout 30 \
             -o json 2>/dev/null | jq -r '.[0].Count // "0"') || LOG_COUNT="0"
         
         if [ "$LOG_COUNT" != "0" ] && [ "$LOG_COUNT" != "null" ]; then

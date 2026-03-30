@@ -19,9 +19,15 @@ You've built the monitoring system. Now put it under pressure. This section simu
 
     Run the attack simulation:
 
-    ```bash
-    ./scripts/section4/4.1-simulate-attack.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/section4/4.1-simulate-attack.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/section4/4.1-simulate-attack.ps1
+        ```
 
     The script sends attacks in phases: reconnaissance, SQL injection, path traversal, shell injection, and prompt injection. It outputs correlation IDs you can use to trace each attack.
 
@@ -63,14 +69,27 @@ You've built the monitoring system. Now put it under pressure. This section simu
 
 When you're done with the workshop:
 
-```bash
-# Remove all Azure resources
-azd down --force --purge
+=== "Bash"
+    ```bash
+    # Remove all Azure resources
+    azd down --force --purge
 
-# Clean up Entra ID app registrations (ignore errors if already deleted)
-az ad app delete --id $(azd env get-value MCP_APP_CLIENT_ID)
-az ad app delete --id $(azd env get-value APIM_CLIENT_APP_ID)
-```
+    # Clean up Entra ID app registrations (ignore errors if already deleted)
+    az ad app delete --id $(azd env get-value MCP_APP_CLIENT_ID)
+    az ad app delete --id $(azd env get-value APIM_CLIENT_APP_ID)
+    ```
+
+=== "PowerShell"
+    ```powershell
+    # Remove all Azure resources
+    azd down --force --purge
+
+    # Clean up Entra ID app registrations (ignore errors if already deleted)
+    $MCP_ID = azd env get-value MCP_APP_CLIENT_ID
+    $APIM_ID = azd env get-value APIM_CLIENT_APP_ID
+    az ad app delete --id $MCP_ID
+    az ad app delete --id $APIM_ID
+    ```
 
 ---
 

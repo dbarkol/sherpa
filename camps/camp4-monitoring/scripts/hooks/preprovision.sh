@@ -27,6 +27,20 @@ else
     echo "Using existing resource suffix: $RESOURCE_SUFFIX"
 fi
 
+# ============================================
+# Set resource group name
+# ============================================
+# Derive from env name if not already set in the azd environment.
+# This prevents inheriting a stale AZURE_RESOURCE_GROUP shell variable
+# from a different camp session.
+STORED_RG=$(azd env get-value AZURE_RESOURCE_GROUP 2>/dev/null || echo "")
+if [ -z "$STORED_RG" ]; then
+    DEFAULT_RG="rg-${AZURE_ENV_NAME:-camp4}"
+    echo "Setting resource group: $DEFAULT_RG"
+    azd env set AZURE_RESOURCE_GROUP "$DEFAULT_RG"
+    export AZURE_RESOURCE_GROUP="$DEFAULT_RG"
+fi
+
 # Sync AZURE_LOCATION with resource group location if RG already exists
 # This ensures Bicep uses the same location as the resource group
 if [ -n "$AZURE_RESOURCE_GROUP" ]; then
@@ -43,7 +57,7 @@ TENANT_ID=$(az account show --query tenantId -o tsv)
 echo "Tenant ID: $TENANT_ID"
 
 # Unique name for apps
-APP_SUFFIX="${AZURE_ENV_NAME:-camp3}-$(date +%s | tail -c 5)"
+APP_SUFFIX="${AZURE_ENV_NAME:-camp4}-$(date +%s | tail -c 5)"
 
 # Generate UUIDs upfront
 SCOPE_ID=$(uuidgen)

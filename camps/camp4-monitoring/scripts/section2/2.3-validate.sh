@@ -67,6 +67,7 @@ QUERY='AppTraces
 RESULT=$(az monitor log-analytics query \
     --workspace "$WORKSPACE_ID" \
     --analytics-query "$QUERY" \
+    --timeout 30 \
     --output json 2>/dev/null) || RESULT="[]"
 
 echo -e "${CYAN}================================================================${NC}"
@@ -100,6 +101,7 @@ if [ "$COUNT" -gt 0 ] && [ "$COUNT" != "0" ]; then
     SUMMARY=$(az monitor log-analytics query \
         --workspace "$WORKSPACE_ID" \
         --analytics-query "$SUMMARY_QUERY" \
+        --timeout 30 \
         --output json 2>/dev/null) || SUMMARY="[]"
     
     echo "$SUMMARY" | jq -r '.[] | "  \(.InjectionType): \(.Count) attacks"' 2>/dev/null || echo "  (No summary available)"

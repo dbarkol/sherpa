@@ -105,6 +105,9 @@ azd up
 
 This deploys an APIM gateway, security functions (v1 with basic logging, v2 with structured logging), a Log Analytics workspace, Application Insights, and the MCP server and Trail API on Container Apps.
 
+!!! tip "Windows Users"
+    All scripts in this camp have PowerShell equivalents (`.ps1`). When you see `./scripts/X.sh`, you can run `./scripts/X.ps1` instead.
+
 !!! tip "Just want the full solution?"
     Skip the workshop and deploy everything at once — dashboards, alerts, and structured logging included. See [Production Deployment](production-deploy.md).
 

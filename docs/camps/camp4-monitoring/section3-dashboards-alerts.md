@@ -19,9 +19,15 @@ You have structured logs flowing and you can query them with KQL. But nobody has
 
     Deploy the Azure Monitor Workbook:
 
-    ```bash
-    ./scripts/section3/3.1-deploy-workbook.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/section3/3.1-deploy-workbook.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/section3/3.1-deploy-workbook.ps1
+        ```
 
     **Access the dashboard:**
 
@@ -57,9 +63,15 @@ Dashboards are great when you're looking at them. Alerts watch your logs continu
 
     Create alert rules:
 
-    ```bash
-    ./scripts/section3/3.2-create-alerts.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/section3/3.2-create-alerts.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/section3/3.2-create-alerts.ps1
+        ```
 
     The script will prompt for an optional email address. You can skip this and view fired alerts in the Azure Portal instead.
 

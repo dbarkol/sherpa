@@ -574,19 +574,38 @@ Things don't always work the first time. Here are the most common issues and how
     2. **Check your time range.** The default in Log Analytics might be "Last 24 hours", if you just deployed, try "Last 1 hour" or "Last 30 minutes".
 
     3. **Verify diagnostic settings exist:**
-       ```bash
-       az monitor diagnostic-settings list \
-         --resource "/subscriptions/.../providers/Microsoft.ApiManagement/service/YOUR-APIM" \
-         --query "[].name"
-       ```
+
+       === "Bash"
+           ```bash
+           az monitor diagnostic-settings list \
+             --resource "/subscriptions/.../providers/Microsoft.ApiManagement/service/YOUR-APIM" \
+             --query "[].name"
+           ```
+
+       === "PowerShell"
+           ```powershell
+           az monitor diagnostic-settings list `
+             --resource "/subscriptions/.../providers/Microsoft.ApiManagement/service/YOUR-APIM" `
+             --query "[].name"
+           ```
 
     4. **Verify Application Insights is connected:**
-       ```bash
-       az functionapp config appsettings list \
-         --name $FUNCTION_APP_NAME \
-         --resource-group $AZURE_RESOURCE_GROUP \
-         --query "[?name=='APPLICATIONINSIGHTS_CONNECTION_STRING']"
-       ```
+
+       === "Bash"
+           ```bash
+           az functionapp config appsettings list \
+             --name $FUNCTION_APP_NAME \
+             --resource-group $AZURE_RESOURCE_GROUP \
+             --query "[?name=='APPLICATIONINSIGHTS_CONNECTION_STRING']"
+           ```
+
+       === "PowerShell"
+           ```powershell
+           az functionapp config appsettings list `
+             --name $env:FUNCTION_APP_NAME `
+             --resource-group $env:AZURE_RESOURCE_GROUP `
+             --query "[?name=='APPLICATIONINSIGHTS_CONNECTION_STRING']"
+           ```
 
     5. **Generate some events!** Run the exploit scripts to create log entries, then wait a few minutes.
 
@@ -597,9 +616,16 @@ Things don't always work the first time. Here are the most common issues and how
     1. **Adjust the time range** at the top of the workbook to a wider window (try "Last 7 days")
     
     2. **Generate events** by running:
-       ```bash
-       ./scripts/section4/4.1-simulate-attack.sh
-       ```
+
+       === "Bash"
+           ```bash
+           ./scripts/section4/4.1-simulate-attack.sh
+           ```
+
+       === "PowerShell"
+           ```powershell
+           ./scripts/section4/4.1-simulate-attack.ps1
+           ```
     
     3. **Wait for ingestion** (2-5 minutes), then refresh the workbook
 

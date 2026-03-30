@@ -85,6 +85,7 @@ echo ""
 RESULT_HTTP=$(az monitor log-analytics query \
     --workspace "$WORKSPACE_ID" \
     --analytics-query "$QUERY_HTTP" \
+    --timeout 30 \
     --output json 2>/dev/null) || RESULT_HTTP="[]"
 
 # Parse results

@@ -25,9 +25,15 @@ Every MCP reques, legitimate or malicious, passes through APIM. By default, APIM
 
     Run the script to send traffic through APIM and verify logging:
 
-    ```bash
-    ./scripts/section1/1.1-explore.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/section1/1.1-explore.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/section1/1.1-explore.ps1
+        ```
 
     **What this script does:**
 
@@ -54,9 +60,15 @@ Every MCP reques, legitimate or malicious, passes through APIM. By default, APIM
 
     Examine the diagnostic settings:
 
-    ```bash
-    ./scripts/section1/1.2-verify.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/section1/1.2-verify.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/section1/1.2-verify.ps1
+        ```
 
     Shows the diagnostic settings deployed via Bicep, which log categories are enabled, and where they're sent. See the **Key Log Tables** below for the fields available in each table.
 
@@ -72,9 +84,15 @@ Every MCP reques, legitimate or malicious, passes through APIM. By default, APIM
 
     Verify logs are flowing:
 
-    ```bash
-    ./scripts/section1/1.3-validate.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/section1/1.3-validate.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/section1/1.3-validate.ps1
+        ```
 
     **HTTP traffic query (ApiManagementGatewayLogs):**
 

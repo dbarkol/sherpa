@@ -51,9 +51,15 @@ The solution is **structured logging**: emitting events as key-value pairs (dime
 
     Run the script to trigger security events:
 
-    ```bash
-    ./scripts/section2/2.1-exploit.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/section2/2.1-exploit.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/section2/2.1-exploit.ps1
+        ```
 
     **What you'll discover:**
 
@@ -72,9 +78,15 @@ The solution is **structured logging**: emitting events as key-value pairs (dime
 
     Switch APIM to use the pre-deployed v2 function and send test attacks:
 
-    ```bash
-    ./scripts/section2/2.2-fix.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/section2/2.2-fix.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/section2/2.2-fix.ps1
+        ```
 
     !!! tip "No Redeployment Required!"
         Both function versions were deployed during initial `azd up`. This script updates APIM's named value `function-app-url` to point to v2, then sends a few test attacks (SQL injection, path traversal, shell injection) to generate structured log entries for the next step.
@@ -128,9 +140,15 @@ The solution is **structured logging**: emitting events as key-value pairs (dime
 
     Run the validation script:
 
-    ```bash
-    ./scripts/section2/2.3-validate.sh
-    ```
+    === "Bash"
+        ```bash
+        ./scripts/section2/2.3-validate.sh
+        ```
+
+    === "PowerShell"
+        ```powershell
+        ./scripts/section2/2.3-validate.ps1
+        ```
 
     **Try it yourself** — open Log Analytics in the Azure portal and run this query to count attacks by type:
 
